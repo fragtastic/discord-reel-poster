@@ -13,6 +13,10 @@ RUN pip install --user --no-cache-dir --upgrade pip \
 
 FROM python:3-alpine
 
+# Set it as an environment variable inside the image
+ARG COMMIT_SHA
+ENV GIT_COMMIT_SHA=$COMMIT_SHA
+
 WORKDIR /app
 
 COPY --from=build /install /usr/local
