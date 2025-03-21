@@ -41,6 +41,6 @@ jobs:
           TAG2=${{ steps.meta.outputs.timestamp }}
           FULL_SHA=${{ steps.meta.outputs.full_sha }}
 
-          docker build --build-arg COMMIT_SHA=$FULL_SHA -t $IMAGE:$TAG1 -t $IMAGE:$TAG2 .
+          docker build -f Containerfile --build-arg COMMIT_SHA=$FULL_SHA -t $IMAGE:$TAG1 -t $IMAGE:$TAG2 .
           docker push $IMAGE:$TAG1
           docker push $IMAGE:$TAG2
