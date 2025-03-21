@@ -1,0 +1,3 @@
+httpx
+discord.py
+git+https://github.com/quarterwire/instapydl.git@master
