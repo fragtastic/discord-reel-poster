@@ -37,10 +37,13 @@ jobs:
       - name: Build and push image with tags
         run: |
           IMAGE=${{ steps.meta.outputs.image }}
-          TAG1=latest
-          TAG2=${{ steps.meta.outputs.timestamp }}
+          TIMESTAMP=${{ steps.meta.outputs.timestamp }}
           FULL_SHA=${{ steps.meta.outputs.full_sha }}
 
-          docker build -f Containerfile --build-arg COMMIT_SHA=$FULL_SHA -t $IMAGE:$TAG1 -t $IMAGE:$TAG2 .
-          docker push $IMAGE:$TAG1
-          docker push $IMAGE:$TAG2
+          docker build \
+            --platform linux/amd64,linux/arm64 \
+            --file Containerfile \
+            --build-arg COMMIT_SHA=$FULL_SHA \
+            --tag $IMAGE:latest \
+            --tag $IMAGE:$TIMESTAMP .
+            --push .
