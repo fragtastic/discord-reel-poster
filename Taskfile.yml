@@ -2,6 +2,11 @@
 
 version: '3'
 
+env:
+  IMAGE_NAME: reel_bot
+  CURRENT_DATESTAMP:
+    sh: date +"%Y%m%d%H%M%S"
+
 dotenv: ['.env']
 
 tasks:
@@ -9,3 +14,9 @@ tasks:
     cmds:
       - python main.py
     silent: true
+  run-container:
+    cmds:
+      - podman run --rm --env-file=.env $IMAGE_NAME:latest
+  build-container:
+    cmds:
+      - podman build -t $IMAGE_NAME:latest -t $IMAGE_NAME:$CURRENT_DATESTAMP .
