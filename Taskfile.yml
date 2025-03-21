@@ -6,6 +6,8 @@ env:
   IMAGE_NAME: reel_bot
   CURRENT_DATESTAMP:
     sh: date +"%Y%m%d%H%M%S"
+  GIT_SHA:
+    sh: git rev-parse HEAD
 
 dotenv: ['.env']
 
@@ -19,4 +21,4 @@ tasks:
       - podman run --rm --env-file=.env $IMAGE_NAME:latest
   build-container:
     cmds:
-      - podman build -t $IMAGE_NAME:latest -t $IMAGE_NAME:$CURRENT_DATESTAMP .
+      - podman build --build-arg COMMIT_SHA=$GIT_SHA -t $IMAGE_NAME:latest -t $IMAGE_NAME:$CURRENT_DATESTAMP .

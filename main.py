@@ -28,6 +28,7 @@ file_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
 
+logger.info(f'Git Commit SHA: {os.environ.get('GIT_COMMIT_SHA', None)}')
 
 class MyClient(discord.Client):
     async def on_ready(self):        
