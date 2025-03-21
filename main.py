@@ -38,7 +38,13 @@ class MyClient(discord.Client):
             logger.debug('Ignoring self message')
             return
 
-        logger.debug(f'Processing message from {message.author}({message.author.id}) in #{message.channel.name}({message.channel.id}): {message.content}')
+        # Determine channel name and ID safely
+        if isinstance(message.channel, discord.DMChannel):
+            channel_name = "DM"
+        else:
+            channel_name = message.channel.name
+
+        logger.debug(f'Processing message from {message.author}({message.author.id}) in #{channel_name}({message.channel.id}): {message.content}')
         match = re.search(pattern_url, message.content)
         if match.group('url'):
             logger.debug(f'Found reel: "{match.group('url')}"')
@@ -55,10 +61,15 @@ class MyClient(discord.Client):
             logger.debug('Video downloaded to memory "{filename}"')
             tmp_file = discord.File(reel_bytes, filename=filename)
             await message.channel.send(f'{message.author.mention} {match.group('url')}', file=tmp_file, suppress_embeds=True)
-            logger.debug(f'Post submitted for {message.author.mention} {match.group('url')}')
+            logger.info(f'Post submitted for {message.author}({message.author.id}) in #{channel_name}({message.channel.id}): {message.content}')
 
-            await message.delete()  # Delete the original message
-            logger.debug('Original Post deleted')
+            try:
+                await message.delete()  # Delete the original message
+                logger.debug('Original Post deleted')
+            except discord.errors.Forbidden as e:
+                logger.debug(f'Could not delete original Post: {e}')
+            except Exception as e:
+                logger.error(f'Unexpected error while deleting message: {e}', exc_info=True)
 
 intents = discord.Intents.default()
 intents.messages = True
