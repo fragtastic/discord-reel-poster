@@ -1,6 +1,8 @@
 # discord-reel-poster
 Takes IG Reel links from chat and posts the mp4 video file to chat.
 
+[![Build and Push Docker Image](https://github.com/fragtastic/discord-reel-poster/actions/workflows/docker-build.yaml/badge.svg)](https://github.com/fragtastic/discord-reel-poster/actions/workflows/docker-build.yaml)
+
 ## Configuration
 
 Only the `DISCORD_BOT_TOKEN` environment variable needs to be configured with the Discord bot token. See Discord documentation for this.
